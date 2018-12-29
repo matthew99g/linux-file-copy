@@ -120,7 +120,5 @@ main(const int argc, const char *argv[])
     if(close(outputFd) == -1)
         errExit("close output\n");
 
-        exit(EXIT_SUCCESS);
-
     return EXIT_SUCCESS;
 }
