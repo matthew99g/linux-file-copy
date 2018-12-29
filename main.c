@@ -7,10 +7,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_ENAME 132
+//#define MAX_ENAME 132
 
 #ifndef BUF_SIZE
 #define BUF_SIZE 1024
+#endif
+
+#ifdef __GNUC__
+#define NORETURN __attribute__ ((__noreturn__))
+#else
+#define NORETURN
 #endif
 
 /* DECIDED NOT TO USE THIS FUNCTION */
@@ -35,7 +41,7 @@ outputError(char useErr, int err, char flushStdout,
     fflush(stderr);
 }*/
 
-void
+void NORETURN
 usageErr(const char *format, ...) {
     va_list argList;
 
@@ -50,7 +56,7 @@ usageErr(const char *format, ...) {
     exit(EXIT_FAILURE);
 }
 
-void
+void NORETURN
 errExit(const char *format, ...)
 {
     va_list argList;
@@ -66,7 +72,7 @@ errExit(const char *format, ...)
     exit(EXIT_FAILURE);
 }
 
-void
+void NORETURN
 fatal(const char *fmt)
 {
     fflush(stdout);
