@@ -73,4 +73,7 @@ static void NORETURN
 outputError(Boolean useErr, Boolean flushStdout,
         const char *fmt, __STD_ARGS);
 
+void NORETURN
+cmdLineError(const char *format, __STD_ARGS);
+
 #endif

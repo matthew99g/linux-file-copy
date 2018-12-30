@@ -123,4 +123,22 @@ terminate(Boolean useExit3)
         _exit(EXIT_FAILURE);
 }
 
+void NORETURN
+cmdLineError(const char *format, __STD_ARGS)
+{
+    fflush(stdout);
+
+    va_list argList;
+
+    fprintf(stderr, "Command-line usage error | ");
+
+    va_start(argList, format);
+    vfprintf(stderr, format, argList);
+    va_end(argList);
+
+    fflush(stderr);
+
+    terminate(TRUE);
+}
+
 #endif

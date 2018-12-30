@@ -2,6 +2,7 @@
 // main.c
 
 #include "errlib.h"
+#include "getnum.h"
 
 int
 main(const int argc, const char *argv[])
