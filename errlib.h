@@ -15,26 +15,7 @@ _err_exit(const char *fmt, __STD_ARGS)
     vfprintf(stderr, fmt, argList);
     va_end(argList);
 
-    _exit(EXIT_FAILURE);
-}
-
-static void NORETURN
-terminate(Boolean useExit3)
-{
-    char *s;
-
-    /* Dump core if EN_DUMPCORE environment variable is defined and
-    is a nonempty string; otherwise call exit(3) or _exit(2),
-    depending on the value of 'useExit3'. */
-
-    s = getenv("EF_DUMPCORE");
-
-    if (s != NULL && *s != '\0')
-        abort();
-    else if(useExit3)
-        exit(EXIT_FAILURE);
-    else
-        _exit(EXIT_FAILURE);
+    terminate(FALSE);
 }
 
 void NORETURN
@@ -52,7 +33,7 @@ errnoExit(const char *fmt, __STD_ARGS)
 
     fflush(stderr);
 
-    exit(EXIT_FAILURE);
+    terminate(TRUE);
 }
 
 
@@ -69,7 +50,7 @@ usageErr(const char *format, __STD_ARGS) {
     va_end(argList);
 
     fflush(stderr);
-    exit(EXIT_FAILURE);
+    terminate(TRUE);
 }
 
 void NORETURN
@@ -86,7 +67,7 @@ errExit(const char *format, __STD_ARGS)
     va_end(argList);
 
     fflush(stderr);
-    exit(EXIT_FAILURE);
+    terminate(TRUE);
 }
 
 void NORETURN
@@ -98,7 +79,7 @@ fatal(const char *fmt)
     fprintf(stderr, "%s\n", fmt);
     
     fflush(stderr);
-    exit(EXIT_FAILURE);
+    terminate(TRUE);
 }
 
 static void NORETURN
@@ -119,7 +100,27 @@ outputError(Boolean useErr, Boolean flushStdout,
     else
         errExit("%s\n", userMsg);
 
+    // not supposed to reach here
     terminate(FALSE);
+}
+
+static void NORETURN
+terminate(Boolean useExit3)
+{
+    char *s;
+
+    /* Dump core if EN_DUMPCORE environment variable is defined and
+    is a nonempty string; otherwise call exit(3) or _exit(2),
+    depending on the value of 'useExit3'. */
+
+    s = getenv("EF_DUMPCORE");
+
+    if (s != NULL && *s != '\0')
+        abort();
+    else if(useExit3)
+        exit(EXIT_FAILURE);
+    else
+        _exit(EXIT_FAILURE);
 }
 
 #endif
